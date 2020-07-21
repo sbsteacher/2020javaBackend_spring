@@ -3,7 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
@@ -22,8 +24,7 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.springbook.board" />
-	
-	
+		
 	<beans:bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 	    <beans:property name="poolName" value="springHikariCP" />
 	    <beans:property name="connectionTestQuery" value="SELECT 1" />
@@ -33,33 +34,22 @@
 	    
 	    <beans:property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3307/springboard?serverTimeZone=UTC"/>
 		<beans:property name="username" value="root"/>
-		<beans:property name="password" value="1234"/>
-	<!-- 
-	    <beans:property name="dataSourceProperties">
-	        <beans:props>
-	            <beans:prop key="url">jdbc:mysql://127.0.0.1:3307/springboard?serverTimeZone=UTC</beans:prop>
-	            <beans:prop key="user">root</beans:prop>
-	            <beans:prop key="password">1234</beans:prop>
-	        </beans:props>
-	    </beans:property>
-	    -->
+		<beans:property name="password" value="1234"/> 
 	</beans:bean>
 
-<!-- HikariCP configuration -->
-<beans:bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-    <beans:constructor-arg ref="hikariConfig" />
-</beans:bean>
-
-
-	<!-- beans:bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
-	    <beans:property name="dataSourceClassName" value="com.mysql.cj.jdbc.Driver" />
-	    <beans:property name="dataSource.url" value="jdbc:mysql://127.0.0.1:3307/springboard" />
-	    <beans:property name="dataSource.user" value="root" />
-	    <beans:property name="dataSource.password" value="1234" />
-	</beans:bean-->
+	<!-- HikariCP configuration -->
+	<beans:bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+	    <beans:constructor-arg ref="hikariConfig" />
+	</beans:bean>
 	
-	<beans:bean id="dao" class="com.springbook.board.DataDAO">
+	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<beans:property name="dataSource" ref="dataSource"/>
 	</beans:bean>
-	
+	<mybatis-spring:scan base-package="com.springbook.board"/>	
 </beans:beans>
+
+
+
+
+
+

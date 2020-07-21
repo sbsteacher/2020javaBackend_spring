@@ -17,13 +17,8 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	@Autowired
-	private DataDAO dao;
-	
-	@RequestMapping(value = "/dddd/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
-		
-		dao.getData();
 		return "login";
 	}
 	
