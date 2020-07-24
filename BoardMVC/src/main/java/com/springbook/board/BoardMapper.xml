@@ -12,6 +12,7 @@
 	<select id="selBoardList" resultType="com.springbook.board.BoardVO">
 		SELECT i_board, title, r_dt 
 		FROM t_board
+		ORDER BY i_board DESC
 	</select>
 	
 	<select id="selBoard" resultType="com.springbook.board.BoardVO" 

@@ -40,24 +40,17 @@ public class BoardController {
 		return "board/detail";
 	}	
 	
-	
-	
 	@RequestMapping(value = "/upd", method = RequestMethod.GET)
 	public String boardUpd(BoardVO param, Model model) {
 		model.addAttribute("data", service.selBoard(param));
-		return "board/upd";
+		return "board/write";
 	}
 	
 	@RequestMapping(value = "/upd", method = RequestMethod.POST)
 	public String boardUpd(BoardVO param) {
 		int result = service.updBoard(param);
 		return "redirect:/board/detail?i_board=" + param.getI_board();
-	}
-	
-	
-	
-	
-	
+	}	
 	
 	@RequestMapping(value="/del", method=RequestMethod.GET)
 	public String boardDel(@RequestParam int i_board) {
