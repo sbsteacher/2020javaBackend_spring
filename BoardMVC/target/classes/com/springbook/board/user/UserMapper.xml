@@ -4,9 +4,9 @@
 	
 	<insert id="join" parameterType="com.springbook.board.user.UserVO">
 		INSERT INTO t_user
-		(uid, upw, nm, addr) 
+		(uid, upw, salt, nm, addr) 
 		VALUES
-		(#{uid}, #{upw}, #{nm}, #{addr})
+		(#{uid}, #{upw}, #{salt}, #{nm}, #{addr})
 	</insert>
 </mapper>
 

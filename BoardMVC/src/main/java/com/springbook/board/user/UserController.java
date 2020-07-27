@@ -1,6 +1,8 @@
 
 package com.springbook.board.user;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,12 @@ public class UserController {
 	public String login() {
 		return "user/login";
 	}	
+	
+	@RequestMapping(value="/loginPost", method=RequestMethod.POST)
+	public String login(UserVO param, HttpSession hs) {
+		
+		return "user/login";
+	}
 	
 	@RequestMapping(value="/join", method=RequestMethod.GET)
 	public String join() {

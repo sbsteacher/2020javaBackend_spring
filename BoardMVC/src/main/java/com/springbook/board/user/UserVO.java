@@ -4,11 +4,18 @@ public class UserVO {
 	private int i_user;
 	private String uid;
 	private String upw;
+	private String salt;
 	private String upwConfirm;
 	private String nm;
 	private String addr;
 	private String r_dt;
 	
+	public String getSalt() {
+		return salt;
+	}
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
 	public int getI_user() {
 		return i_user;
 	}
