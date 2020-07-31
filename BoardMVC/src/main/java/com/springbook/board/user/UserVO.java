@@ -8,8 +8,15 @@ public class UserVO {
 	private String upwConfirm;
 	private String nm;
 	private String addr;
+	private String ph;
 	private String r_dt;
-	
+		
+	public String getPh() {
+		return ph;
+	}
+	public void setPh(String ph) {
+		this.ph = ph;
+	}
 	public String getSalt() {
 		return salt;
 	}
