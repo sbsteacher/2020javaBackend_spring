@@ -16,6 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -89,7 +91,7 @@ public class UserController {
 	public String loginKAKAO() {
 		String uri = String.format("redirect:https://kauth.kakao.com/oauth/authorize?"
 				+ "client_id=%s&redirect_uri=%s&response_type=code"
-				, Const.KAKAO_CLIENT_ID, Const.KAKAO_REDIRECT_URI);
+				, Const.KAKAO_CLIENT_ID, Const.KAKAO_AUTH_REDIRECT_URI);
 		return uri;
 	}
 	
@@ -100,22 +102,34 @@ public class UserController {
 		System.out.println("code : " + code);
 		System.out.println("error : " + error);
 		
-		HttpHeaders headers = new HttpHeaders();
+		if(code == null) {			
+			return "redirect:/user/login";
+		}
 		
+		HttpHeaders headers = new HttpHeaders();
 		Charset utf8 = Charset.forName("UTF-8");
 		MediaType mediaType = new MediaType(MediaType.APPLICATION_JSON, utf8);		
 		headers.setAccept(Arrays.asList(mediaType));
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);		
-		HttpEntity<String> entity = new HttpEntity<String>("", headers);
+				
+		MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+		map.add("grant_type", "authorization_code");
+		map.add("client_id", Const.KAKAO_CLIENT_ID);
+		map.add("redirect_uri", Const.KAKAO_AUTH_REDIRECT_URI);
+		map.add("code", code);
+				
+		HttpEntity<LinkedMultiValueMap<String, Object>> entity = new HttpEntity(map, headers);
 		
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<String> respEntity 
 		= restTemplate.exchange(Const.KAKAO_ACCESS_TOKEN_HOST, HttpMethod.POST, entity, String.class);
 		
+		String result = respEntity.getBody();
+		
+		System.out.println("result : " + result);
 		
 		return "redirect:/user/login";
 	}
-	
 	
 }
 
