@@ -1,18 +1,25 @@
 
 package com.springbook.board.user;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springbook.board.common.Const;
@@ -92,8 +99,21 @@ public class UserController {
 		System.out.println("code : " + code);
 		System.out.println("error : " + error);
 		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(new MediaType[] { MediaType.APPLICATION_JSON }));
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("KEY", "VALUE");
+		
+		HttpEntity<String> entity = new HttpEntity<String>("", headers);
+		
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<String> respEntity = restTemplate.exchange(Const.KAKAO_ACCESS_TOKEN_HOST, HttpMethod.POST, entity, String.class);
+		
+		
 		return "redirect:/user/login";
 	}
+	
+	
 }
 
 
