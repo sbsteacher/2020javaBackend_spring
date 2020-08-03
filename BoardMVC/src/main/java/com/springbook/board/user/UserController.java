@@ -1,6 +1,7 @@
 
 package com.springbook.board.user;
 
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -100,14 +101,16 @@ public class UserController {
 		System.out.println("error : " + error);
 		
 		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(new MediaType[] { MediaType.APPLICATION_JSON }));
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.set("KEY", "VALUE");
 		
+		Charset utf8 = Charset.forName("UTF-8");
+		MediaType mediaType = new MediaType(MediaType.APPLICATION_JSON, utf8);		
+		headers.setAccept(Arrays.asList(mediaType));
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);		
 		HttpEntity<String> entity = new HttpEntity<String>("", headers);
 		
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<String> respEntity = restTemplate.exchange(Const.KAKAO_ACCESS_TOKEN_HOST, HttpMethod.POST, entity, String.class);
+		ResponseEntity<String> respEntity 
+		= restTemplate.exchange(Const.KAKAO_ACCESS_TOKEN_HOST, HttpMethod.POST, entity, String.class);
 		
 		
 		return "redirect:/user/login";
