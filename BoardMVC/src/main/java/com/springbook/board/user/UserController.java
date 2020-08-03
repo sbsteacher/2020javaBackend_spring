@@ -84,6 +84,16 @@ public class UserController {
 				, Const.KAKAO_CLIENT_ID, Const.KAKAO_REDIRECT_URI);
 		return uri;
 	}
+	
+	@RequestMapping(value="/joinKakao", method=RequestMethod.GET)
+	public String joinKAKAO(@RequestParam(required=false) String code,
+			@RequestParam(required=false) String error) {
+		
+		System.out.println("code : " + code);
+		System.out.println("error : " + error);
+		
+		return "redirect:/user/login";
+	}
 }
 
 
