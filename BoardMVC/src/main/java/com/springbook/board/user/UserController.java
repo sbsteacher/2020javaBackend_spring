@@ -25,7 +25,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springbook.board.common.Const;
+import com.springbook.board.common.KakaoAuth;
 import com.springbook.board.common.MyUtils;
 
 @Controller
@@ -125,8 +129,23 @@ public class UserController {
 		= restTemplate.exchange(Const.KAKAO_ACCESS_TOKEN_HOST, HttpMethod.POST, entity, String.class);
 		
 		String result = respEntity.getBody();
-		
 		System.out.println("result : " + result);
+		
+		ObjectMapper om = new ObjectMapper();
+		
+		try {
+			KakaoAuth auth = om.readValue(result, KakaoAuth.class);
+			
+			System.out.println("access_token: " + auth.getAccess_token());
+			System.out.println("refresh_token: " + auth.getRefresh_token());
+			System.out.println("expires_in: " + auth.getExpires_in());
+			System.out.println("refresh_token_expires_in: " + auth.getRefresh_token_expires_in());
+			
+		} catch (JsonMappingException e) {			
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 		
 		return "redirect:/user/login";
 	}
