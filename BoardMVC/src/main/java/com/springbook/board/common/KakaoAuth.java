@@ -2,17 +2,10 @@ package com.springbook.board.common;
 
 public class KakaoAuth {
 	private String access_token;
-	private String refresh_token;
-	private String token_type;
+	private String refresh_token;	
 	private int expires_in;
 	private int refresh_token_expires_in;
 	
-	public String getToken_type() {
-		return token_type;
-	}
-	public void setToken_type(String token_type) {
-		this.token_type = token_type;
-	}
 	public String getAccess_token() {
 		return access_token;
 	}

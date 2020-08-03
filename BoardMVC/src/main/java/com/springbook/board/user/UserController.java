@@ -26,6 +26,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springbook.board.common.Const;
@@ -131,7 +132,7 @@ public class UserController {
 		String result = respEntity.getBody();
 		System.out.println("result : " + result);
 		
-		ObjectMapper om = new ObjectMapper();
+		ObjectMapper om = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		
 		try {
 			KakaoAuth auth = om.readValue(result, KakaoAuth.class);
