@@ -12,12 +12,33 @@ public class MyUtils {
 		return BCrypt.hashpw(pw, salt);
 	}
 	
+	//랜덤 숫자 (sNo~eNo 범위)
+	public static int makeRandomNumber(int sNo, int eNo) {
+		return (int)(Math.random() * (eNo - sNo) + sNo);
+	}
 	
-	//len:길이 (0~9사이의 숫자)
-	
+	//len:길이 (0~9사이의 숫자)	
 	public static String makeRandomNumber(int len) {
-		String result = null;
-		
+		String result = "";		
+		for(int i=0; i<len; i++) {
+			result += (int)(Math.random() * 10);
+		}
 		return result;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

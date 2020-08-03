@@ -9,6 +9,7 @@
 </head>
 <body>
 	<div>
+		<div>${msg}</div>
 		<div><a href="/user/login">로그인</a></div>
 		<form action="/user/joinPost" method="post">
 			<div>아이디 : <input type="text" name="uid"></div>
