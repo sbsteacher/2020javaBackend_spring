@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.springbook.board.common.Const;
 import com.springbook.board.common.MyUtils;
 
 @Controller
@@ -75,7 +76,27 @@ public class UserController {
 		
 		return map;
 	}
+	
+	@RequestMapping(value="/loginKAKAO", method=RequestMethod.GET)
+	public String loginKAKAO() {
+		String uri = String.format("redirect:https://kauth.kakao.com/oauth/authorize?"
+				+ "client_id=%s&redirect_uri=%s&response_type=code"
+				, Const.KAKAO_CLIENT_ID, Const.KAKAO_REDIRECT_URI);
+		return uri;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
