@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
-<script src="/resources/axios.min.js"></script>
+<script src="/resources/js/axios.min.js"></script>
 </head>
 <body>
 	<div>
@@ -15,8 +15,8 @@
 			<div>비밀번호 : <input type="password" name="upw"></div>
 			<div>확인 비밀번호 : <input type="password" name="upwConfirm"></div>
 			<div>
-				Phone : 010 - <input type="text" name="ph">
-				<button onclick="sendPhAuthNumber()">인증번호 보내기</button>
+				Phone : 010 - <input type="text" name="ph" id="ph">
+				<button type="button" onclick="sendPhAuthNumber()">인증번호 보내기</button>
 			</div>
 			<div>인증번호 : <input type="text" name="phAuthNumber"></div>
 			<div id="phAuthResult"></div>
@@ -27,7 +27,24 @@
 	</div>
 	<script>
 		function sendPhAuthNumber() {
+			if(ph.value.length < 9) {
+				alert('Phone 번호를 확인해 주세요')
+				return
+			}
 			
+			console.log('ph : ' + ph.value)
+			axios.get('/user/phAuth', {
+				params: {
+					ph: ph.value
+				}
+			}).then(function(res) {				
+				
+				if(res.data.result == 1) {
+					alert('통신 완료')
+				} else {
+					alert('에러 발생')
+				}
+			})
 		}
 	</script>
 </body>

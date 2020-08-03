@@ -11,4 +11,13 @@ public class MyUtils {
 	public static String hashPassword(String pw, String salt) {
 		return BCrypt.hashpw(pw, salt);
 	}
+	
+	
+	//len:길이 (0~9사이의 숫자)
+	
+	public static String makeRandomNumber(int len) {
+		String result = null;
+		
+		return result;
+	}
 }
