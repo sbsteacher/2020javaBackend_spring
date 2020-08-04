@@ -3,7 +3,14 @@ package com.springbook.board.common;
 public class KakaoUserInfo {
 	private int id;
 	private String connected_at;
+	private KakaoProperties properties;
 	
+	public KakaoProperties getProperties() {
+		return properties;
+	}
+	public void setProperties(KakaoProperties properties) {
+		this.properties = properties;
+	}
 	public int getId() {
 		return id;
 	}

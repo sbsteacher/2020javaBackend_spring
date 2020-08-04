@@ -118,6 +118,9 @@ public class UserService {
 			
 			System.out.println("id: " + kui.getId());
 			System.out.println("connected_at: " + kui.getConnected_at());
+			System.out.println("nickname: " + kui.getProperties().getNickname());
+			System.out.println("profile_img: " + kui.getProperties().getProfile_image());
+			System.out.println("thumb_img: " + kui.getProperties().getThumbnail_image());
 			
 		} catch (JsonMappingException e) {			
 			e.printStackTrace();
@@ -133,7 +136,7 @@ public class UserService {
 		UserVO dbResult = mapper.login(param);
 		
 		if(dbResult == null) { //회원가입
-			param.setNm(param.getUid());
+			param.setNm(kui.getProperties().getNickname());
 			param.setUpw("");
 			param.setPh("");
 			param.setSalt("");
