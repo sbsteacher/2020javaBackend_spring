@@ -134,8 +134,9 @@ public class UserController {
 		
 		ObjectMapper om = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		
+		KakaoAuth auth = null;
 		try {
-			KakaoAuth auth = om.readValue(result, KakaoAuth.class);
+			auth = om.readValue(result, KakaoAuth.class);
 			
 			System.out.println("access_token: " + auth.getAccess_token());
 			System.out.println("refresh_token: " + auth.getRefresh_token());
@@ -146,7 +147,22 @@ public class UserController {
 			e.printStackTrace();
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
-		}
+		}		
+		
+		//사용자 정보 가져오기 위한 통신 세팅
+		HttpHeaders headers2 = new HttpHeaders();		
+		MediaType mediaType2 = new MediaType(MediaType.APPLICATION_JSON, utf8);		
+		headers2.setAccept(Arrays.asList(mediaType2));
+		headers2.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		headers2.set("Authorization", "Bearer " +  auth.getAccess_token());
+		
+		HttpEntity<LinkedMultiValueMap<String, Object>> entity2 = new HttpEntity("", headers2);
+				
+		ResponseEntity<String> respEntity2 
+		= restTemplate.exchange(Const.KAKAO_API_HOST + "/v2/user/me", HttpMethod.GET, entity2, String.class);
+		
+		String result2 = respEntity2.getBody();
+		System.out.println("result2 : " + result2);
 		
 		return "redirect:/user/login";
 	}
