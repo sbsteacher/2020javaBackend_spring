@@ -105,87 +105,23 @@ public class UserController {
 	//인증코드 받기 (응답)
 	@RequestMapping(value="/joinKakao", method=RequestMethod.GET)
 	public String joinKAKAO(@RequestParam(required=false) String code,
-			@RequestParam(required=false) String error) {
+			@RequestParam(required=false) String error,
+			HttpSession hs) {
 		
 		System.out.println("code : " + code); //인증코드!!!
 		System.out.println("error : " + error);
 		
 		if(code == null) {			
 			return "redirect:/user/login";
-		}
-		
-		//--------------------------------------------------------------- 사용자 토큰 받기 --------------- [ START ]
-		HttpHeaders headers = new HttpHeaders();
-		Charset utf8 = Charset.forName("UTF-8");
-		MediaType mediaType = new MediaType(MediaType.APPLICATION_JSON, utf8);		
-		headers.setAccept(Arrays.asList(mediaType));
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);		
-				
-		MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
-		map.add("grant_type", "authorization_code");
-		map.add("client_id", Const.KAKAO_CLIENT_ID);
-		map.add("redirect_uri", Const.KAKAO_AUTH_REDIRECT_URI);
-		map.add("code", code);
-				
-		HttpEntity<LinkedMultiValueMap<String, Object>> entity = new HttpEntity(map, headers);
-		
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<String> respEntity 
-		= restTemplate.exchange(Const.KAKAO_ACCESS_TOKEN_HOST, HttpMethod.POST, entity, String.class);
-		
-		String result = respEntity.getBody();
-		System.out.println("result : " + result);
-		
-		ObjectMapper om = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		
-		KakaoAuth auth = null;
-		try {
-			auth = om.readValue(result, KakaoAuth.class);
-			
-			System.out.println("access_token: " + auth.getAccess_token());
-			System.out.println("refresh_token: " + auth.getRefresh_token());
-			System.out.println("expires_in: " + auth.getExpires_in());
-			System.out.println("refresh_token_expires_in: " + auth.getRefresh_token_expires_in());
-			
-		} catch (JsonMappingException e) {			
-			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
 		}		
+		int result = service.kakaoLogin(code, hs);
 		
-		//--------------------------------------------------------------- 사용자 토큰 받기 --------------- [ END ]
-		
-		
-		//--------------------------------------------------------------- 사용자 정보 가져오기 --------------- [ START ]
-		HttpHeaders headers2 = new HttpHeaders();		
-		MediaType mediaType2 = new MediaType(MediaType.APPLICATION_JSON, utf8);		
-		headers2.setAccept(Arrays.asList(mediaType2));
-		headers2.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		headers2.set("Authorization", "Bearer " +  auth.getAccess_token());
-		
-		HttpEntity<LinkedMultiValueMap<String, Object>> entity2 = new HttpEntity("", headers2);
-				
-		ResponseEntity<String> respEntity2 
-		= restTemplate.exchange(Const.KAKAO_API_HOST + "/v2/user/me", HttpMethod.GET, entity2, String.class);
-		
-		String result2 = respEntity2.getBody();
-		System.out.println("result2 : " + result2);
-		
-		KakaoUserInfo kui = null;
-		
-		try {
-			kui = om.readValue(result2, KakaoUserInfo.class);
-			
-			System.out.println("id: " + kui.getId());
-			System.out.println("connected_at: " + kui.getConnected_at());
-			
-		} catch (JsonMappingException e) {			
-			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}	
-		//--------------------------------------------------------------- 사용자 정보 가져오기 --------------- [ END ]
-		
+		return "redirect:/board/list";
+	}
+	
+	@RequestMapping(value="/logout", method=RequestMethod.GET)
+	public String logout(HttpSession hs) {
+		hs.invalidate();
 		return "redirect:/user/login";
 	}
 	
