@@ -14,18 +14,38 @@
 		<a href="/user/logout"><button>로그아웃</button></a>
 	</div>
 	<a href="/board/write">글등록</a>
-	<table>
+	<table id="contentTable">
 		<tr>
 			<th>번호</th>
 			<th>제목</th>
 			<th>등록일시</th>
 		</tr>
-		<div id="boardContent">
-		</div>	
 	</table>
 	<script>
 		function moveToDetail(i_board) {
 			location.href = '/board/detail?i_board=' + i_board
+		}
+		
+		function addRows(res) {
+			res.data.result.forEach(function(item) {
+				
+				var td1 = document.createElement("td");
+				td1.innerHTML = item.i_board
+				
+				var td2 = document.createElement("td");
+				td2.innerHTML = item.title
+				
+				var td3 = document.createElement("td");
+				td3.innerHTML = item.r_dt
+				
+				var tr = document.createElement('tr')
+				tr.appendChild(td1)
+				tr.appendChild(td2)
+				tr.appendChild(td3)
+			
+				var ele = document.querySelector('#contentTable')					
+				ele.appendChild(tr)
+			})
 		}
 				
 		function getBoardData(page) {
@@ -33,8 +53,8 @@
 				params: {
 					page: page
 				}
-			}).then(function (data) {
-				console.log(data)
+			}).then(function (res) {
+				addRows(res)
 			})
 		}
 		
