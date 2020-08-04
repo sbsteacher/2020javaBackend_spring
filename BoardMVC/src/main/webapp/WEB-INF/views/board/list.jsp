@@ -19,7 +19,7 @@
 			<th>번호</th>
 			<th>제목</th>
 			<th>등록일시</th>
-		</tr>
+		</tr>		
 	</table>
 	<script>
 		function moveToDetail(i_board) {
@@ -60,6 +60,13 @@
 		
 		var page = 1
 		getBoardData(page)
+		
+		window.addEventListener('scroll', function() {
+			if(window.scrollY + window.innerHeight >= document.body.scrollHeight) {
+				page += page
+				getBoardData(page)	
+			}
+		})
 	</script>
 </body>
 </html>
