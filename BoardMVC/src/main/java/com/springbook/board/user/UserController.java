@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springbook.board.common.Const;
 import com.springbook.board.common.KakaoAuth;
+import com.springbook.board.common.KakaoUserInfo;
 import com.springbook.board.common.MyUtils;
 
 @Controller
@@ -92,6 +93,7 @@ public class UserController {
 		return map;
 	}
 	
+	//인증코드 받기 (요청)
 	@RequestMapping(value="/loginKAKAO", method=RequestMethod.GET)
 	public String loginKAKAO() {
 		String uri = String.format("redirect:https://kauth.kakao.com/oauth/authorize?"
@@ -100,17 +102,19 @@ public class UserController {
 		return uri;
 	}
 	
+	//인증코드 받기 (응답)
 	@RequestMapping(value="/joinKakao", method=RequestMethod.GET)
 	public String joinKAKAO(@RequestParam(required=false) String code,
 			@RequestParam(required=false) String error) {
 		
-		System.out.println("code : " + code);
+		System.out.println("code : " + code); //인증코드!!!
 		System.out.println("error : " + error);
 		
 		if(code == null) {			
 			return "redirect:/user/login";
 		}
 		
+		//--------------------------------------------------------------- 사용자 토큰 받기 --------------- [ START ]
 		HttpHeaders headers = new HttpHeaders();
 		Charset utf8 = Charset.forName("UTF-8");
 		MediaType mediaType = new MediaType(MediaType.APPLICATION_JSON, utf8);		
@@ -149,7 +153,10 @@ public class UserController {
 			e.printStackTrace();
 		}		
 		
-		//사용자 정보 가져오기 위한 통신 세팅
+		//--------------------------------------------------------------- 사용자 토큰 받기 --------------- [ END ]
+		
+		
+		//--------------------------------------------------------------- 사용자 정보 가져오기 --------------- [ START ]
 		HttpHeaders headers2 = new HttpHeaders();		
 		MediaType mediaType2 = new MediaType(MediaType.APPLICATION_JSON, utf8);		
 		headers2.setAccept(Arrays.asList(mediaType2));
@@ -163,6 +170,21 @@ public class UserController {
 		
 		String result2 = respEntity2.getBody();
 		System.out.println("result2 : " + result2);
+		
+		KakaoUserInfo kui = null;
+		
+		try {
+			kui = om.readValue(result2, KakaoUserInfo.class);
+			
+			System.out.println("id: " + kui.getId());
+			System.out.println("connected_at: " + kui.getConnected_at());
+			
+		} catch (JsonMappingException e) {			
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}	
+		//--------------------------------------------------------------- 사용자 정보 가져오기 --------------- [ END ]
 		
 		return "redirect:/user/login";
 	}
