@@ -48,22 +48,29 @@
 			})
 		}
 				
-		function getBoardData(page) {
+		function getBoardData(page) {		
 			axios.get('/board/getListData', {
 				params: {
 					page: page
 				}
 			}).then(function (res) {
-				addRows(res)
+				addRows(res)				
+				if(res.data.result.length < 60) {
+					isBreak = true	
+				}
 			})
 		}
 		
+		var isBreak = false
 		var page = 1
 		getBoardData(page)
 		
 		window.addEventListener('scroll', function() {
+			if(isBreak) {
+				return
+			}
 			if(window.scrollY + window.innerHeight >= document.body.scrollHeight) {
-				page += page
+				page++
 				getBoardData(page)	
 			}
 		})
