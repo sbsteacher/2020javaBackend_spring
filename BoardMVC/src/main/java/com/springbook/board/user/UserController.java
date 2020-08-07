@@ -48,8 +48,14 @@ public class UserController {
 	
 	@RequestMapping(value="/loginPost", method=RequestMethod.POST)
 	public String login(UserVO param, HttpSession hs) {
+		int result = service.login(param, hs);
 		
-		return "user/login";
+		switch(result) {
+		case 1:
+			return "redirect:/board/list";
+		default:
+			return "user/login";
+		}
 	}
 	
 	@RequestMapping(value="/join", method=RequestMethod.GET)

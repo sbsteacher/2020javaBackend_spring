@@ -12,7 +12,7 @@
 	
 	<select id="login" parameterType="com.springbook.board.user.UserVO"
 		resultType="com.springbook.board.user.UserVO">
-		SELECT i_user, uid, upw, nm, r_dt
+		SELECT i_user, uid, upw, nm, r_dt, salt
 		FROM t_user
 		WHERE uid = #{uid}	
 	</select>

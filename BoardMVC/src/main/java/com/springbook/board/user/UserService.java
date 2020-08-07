@@ -45,9 +45,26 @@ public class UserService {
 		return result;
 	}
 	
+	//1:로그인(pk, 이름) , 0: 에러, 2:아이디없음, 3:비밀번호 틀림
 	public int login(UserVO param, HttpSession hs) {
 		int result = 0;
+		UserVO data = mapper.login(param);
 		
+		if(data == null) {
+			result = 2;
+		} else {
+			String clientUpw = MyUtils.hashPassword(param.getUpw(), data.getSalt());
+			if(data.getUpw().equals(clientUpw)) {
+				result = 1;
+				UserVO loginUser = new UserVO();
+				loginUser.setI_user(data.getI_user());
+				loginUser.setNm(data.getNm());
+				
+				hs.setAttribute("loginUser", loginUser);
+			} else {
+				result = 3;
+			}
+		}
 		return result;
 	}
 
