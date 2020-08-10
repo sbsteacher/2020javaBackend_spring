@@ -49,7 +49,7 @@ public class UserService {
 	//1:로그인(pk, 이름) , 0: 에러, 2:아이디없음, 3:비밀번호 틀림
 	public int login(UserVO param, HttpSession hs) {
 		int result = 0;
-		UserVO data = mapper.login(param);
+		UserVO data = mapper.selUser(param);
 		
 		if(data == null) {
 			result = 2;
@@ -151,7 +151,7 @@ public class UserService {
 		UserVO param = new UserVO();
 		param.setUid(String.valueOf(kui.getId()));
 		
-		UserVO dbResult = mapper.login(param);
+		UserVO dbResult = mapper.selUser(param);
 		
 		if(dbResult == null) { //회원가입
 			param.setNm(kui.getProperties().getNickname());
@@ -181,8 +181,24 @@ public class UserService {
 		param.setI_user(loginUser.getI_user());
 		param.setProfileImg(fileNm);
 		
-		mapper.updUser(param);
+		mapper.updUser(param);		
+	}
+	
+	public String getProfileImg(HttpSession hs) {
+		String profileImg = null;
 		
+		UserVO loginUser = (UserVO)hs.getAttribute("loginUser");
+		UserVO dbResult = mapper.selUser(loginUser);
+		
+		profileImg = dbResult.getProfileImg();
+		
+		if(profileImg == null) {
+			profileImg = "/resources/img/base_profile.png";
+		} else {
+			profileImg = "/resources/img/user/" + loginUser.getI_user() + "/" + profileImg;
+		}
+		
+		return profileImg;		
 	}
 }
 

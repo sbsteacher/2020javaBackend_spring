@@ -111,7 +111,8 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/profile", method=RequestMethod.GET)
-	public String profile(Model model) {		
+	public String profile(Model model, HttpSession hs) {				
+		model.addAttribute("myProfile", service.getProfileImg(hs));
 		return "user/profile";
 	}
 	

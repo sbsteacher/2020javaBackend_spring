@@ -13,7 +13,7 @@
 </head>
 <body>
 	<div>
-		<img id="id_profile" src="${myProfile != null ? myProfile : '/resources/img/base_profile.png'}">
+		<img id="id_profile" src="${myProfile}">
 	</div>
 	<div>		
 		<form id="frm" method="post" action="/user/profile" enctype="multipart/form-data">		   
