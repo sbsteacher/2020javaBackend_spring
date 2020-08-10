@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -167,6 +168,14 @@ public class UserService {
 		hs.setAttribute("loginUser", dbResult);
 		
 		return result;
+	}
+	
+	public void uploadProfile(MultipartFile file, HttpSession hs) {
+		UserVO loginUser = (UserVO)hs.getAttribute("loginUser");
+		
+		String realPath = hs.getServletContext().getRealPath("/"); //루트 절대경로 가져오기
+		
+		MyUtils.saveFile(realPath + "/resources/img/user/" + loginUser.getI_user(), file);
 	}
 }
 

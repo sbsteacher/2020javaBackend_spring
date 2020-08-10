@@ -41,12 +41,15 @@ public class MyUtils {
 		// 확장자
 		String ext = FilenameUtils.getExtension(file.getOriginalFilename());
 		System.out.println("ext : " + ext);
-
+		
 		fileNm = String.format("%s.%s", uuid, ext);
 		String saveFileNm = String.format("%s/%s", path, fileNm);
-		File saveFile = new File(saveFileNm);
 		
-		try {
+		System.out.println("saveFileNm : " + saveFileNm);
+		File saveFile = new File(saveFileNm);
+		saveFile.mkdirs();
+		
+		try {			
 			file.transferTo(saveFile); // 업로드 파일에 saveFile로 위치로 저장했다.
 		} catch (IOException e) {
 			e.printStackTrace();
