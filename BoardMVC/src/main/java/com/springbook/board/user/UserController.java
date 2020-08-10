@@ -134,6 +134,8 @@ public class UserController {
 	@RequestMapping(value="/profile", method=RequestMethod.POST)
 	public String profile(@RequestParam("uploadProfile") MultipartFile uploadProfile) {			
 		System.out.println("uploadProfile : " + uploadProfile);
+		
+		MyUtils.saveFile("", uploadProfile);
 		return "user/profile";
 	}
 	
