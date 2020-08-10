@@ -118,9 +118,11 @@ public class UserController {
 	
 	@RequestMapping(value="/profile", method=RequestMethod.POST)
 	public String profile(@RequestParam("uploadProfile") MultipartFile file
-			, HttpSession hs) {	
+			, HttpSession hs) {
 		
-		service.uploadProfile(file, hs);
+		if(!file.isEmpty()) {
+			service.uploadProfile(file, hs);
+		}
 		
 		return "redirect:/user/profile";
 	}
