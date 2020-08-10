@@ -58,4 +58,26 @@ public class MyUtils {
 
 		return fileNm;
 	}
+	
+	//이미지 삭제
+	public static boolean deleteFile(String filePath) {
+		boolean result = false;
+		File file = new File(filePath);		
+		if(file.exists()) {
+			result = file.delete();
+		}
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

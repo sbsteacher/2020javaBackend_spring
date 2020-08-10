@@ -170,13 +170,42 @@ public class UserService {
 		return result;
 	}
 	
-	public void uploadProfile(MultipartFile file, HttpSession hs) {
+	public void delProfileImgParent(HttpSession hs) {
+		delProfileImg(hs);
+		
 		UserVO loginUser = (UserVO)hs.getAttribute("loginUser");
 		
-		String realPath = hs.getServletContext().getRealPath("/"); //루트 절대경로 가져오기		
-		String fileNm = MyUtils.saveFile(realPath + "/resources/img/user/" + loginUser.getI_user(), file);
+		//DB profileImg에 빈칸 넣기
+		UserVO param = new UserVO();
+		param.setI_user(loginUser.getI_user());
+		param.setProfileImg("");
 		
-		//
+		mapper.updUser(param);
+	}
+	
+	private void delProfileImg(HttpSession hs) {
+		UserVO loginUser = (UserVO)hs.getAttribute("loginUser");
+
+		String realPath = hs.getServletContext().getRealPath("/"); //루트 절대경로 가져오기
+		String imgFolder = realPath + "/resources/img/user/" + loginUser.getI_user();
+		
+		UserVO dbUser = mapper.selUser(loginUser);
+		if(!"".equals(dbUser.getProfileImg())) { //기존 이미지가 있으면 삭제 처리
+			String imgPath = imgFolder + "/" + dbUser.getProfileImg();
+			MyUtils.deleteFile(imgPath);
+		}	
+	}
+	
+	public void uploadProfile(MultipartFile file, HttpSession hs) {
+		UserVO loginUser = (UserVO)hs.getAttribute("loginUser");		
+				
+		delProfileImg(hs); //기존 이미지 삭제
+		
+		String realPath = hs.getServletContext().getRealPath("/"); //루트 절대경로 가져오기
+		String imgFolder = realPath + "/resources/img/user/" + loginUser.getI_user();
+		
+		String fileNm = MyUtils.saveFile(imgFolder, file);
+
 		UserVO param = new UserVO();
 		param.setI_user(loginUser.getI_user());
 		param.setProfileImg(fileNm);
@@ -192,7 +221,7 @@ public class UserService {
 		
 		profileImg = dbResult.getProfileImg();
 		
-		if(profileImg == null) {
+		if(profileImg == null || profileImg.equals("")) {
 			profileImg = "/resources/img/base_profile.png";
 		} else {
 			profileImg = "/resources/img/user/" + loginUser.getI_user() + "/" + profileImg;

@@ -122,7 +122,13 @@ public class UserController {
 		
 		service.uploadProfile(file, hs);
 		
-		return "user/profile";
+		return "redirect:/user/profile";
+	}
+	
+	@RequestMapping(value="/delProfile", method=RequestMethod.GET)
+	public String profile(HttpSession hs) {
+		service.delProfileImgParent(hs);
+		return "redirect:/user/profile";
 	}
 	
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
