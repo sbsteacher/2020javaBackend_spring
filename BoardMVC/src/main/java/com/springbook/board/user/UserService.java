@@ -173,9 +173,16 @@ public class UserService {
 	public void uploadProfile(MultipartFile file, HttpSession hs) {
 		UserVO loginUser = (UserVO)hs.getAttribute("loginUser");
 		
-		String realPath = hs.getServletContext().getRealPath("/"); //루트 절대경로 가져오기
+		String realPath = hs.getServletContext().getRealPath("/"); //루트 절대경로 가져오기		
+		String fileNm = MyUtils.saveFile(realPath + "/resources/img/user/" + loginUser.getI_user(), file);
 		
-		MyUtils.saveFile(realPath + "/resources/img/user/" + loginUser.getI_user(), file);
+		//
+		UserVO param = new UserVO();
+		param.setI_user(loginUser.getI_user());
+		param.setProfileImg(fileNm);
+		
+		mapper.updUser(param);
+		
 	}
 }
 

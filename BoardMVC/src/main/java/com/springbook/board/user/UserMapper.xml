@@ -17,6 +17,17 @@
 		WHERE uid = #{uid}	
 	</select>
 	
+	<update id="updUser" parameterType="com.springbook.board.user.UserVO">
+		UPDATE t_user
+		SET m_dt = now()
+		<if test='upw != null and upw !=""'>, upw = #{upw}</if>
+		<if test='nm != null and nm !=""'>, nm = #{nm}</if>
+		<if test='addr != null and addr !=""'>, addr = #{addr}</if>
+		<if test='ph != null and ph !=""'>, ph = #{ph}</if>
+		<if test='profileImg != null and profileImg !=""'>, profileImg = #{profileImg}</if>		
+		WHERE i_user = #{i_user} 
+	
+	</update>
 	
 </mapper>
 

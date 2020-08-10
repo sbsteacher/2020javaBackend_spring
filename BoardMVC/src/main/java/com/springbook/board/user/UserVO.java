@@ -9,9 +9,17 @@ public class UserVO {
 	private String nm;
 	private String addr;
 	private String ph;
+	private String profileImg;
 	private String r_dt;
-	private String phAuthNumber;
 		
+	private String phAuthNumber;
+	
+	public String getProfileImg() {
+		return profileImg;
+	}
+	public void setProfileImg(String profileImg) {
+		this.profileImg = profileImg;
+	}
 	public String getPhAuthNumber() {
 		return phAuthNumber;
 	}
