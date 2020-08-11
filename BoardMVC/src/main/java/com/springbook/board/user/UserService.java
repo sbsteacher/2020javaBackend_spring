@@ -161,9 +161,10 @@ public class UserService {
 			param.setAddr("");
 			mapper.join(param);
 			
-			dbResult = param;
+			dbResult = mapper.selUser(param);
 		}
 		
+		dbResult.setUid(null);
 		//로그인 처리(세션에 값 add)
 		hs.setAttribute("loginUser", dbResult);
 		
